@@ -8,6 +8,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+import org.apache.log4j.Logger;
+
 import com.cloudcontrol.doozer4j.exception.BadPathException;
 import com.cloudcontrol.doozer4j.exception.DoozerException;
 import com.cloudcontrol.doozer4j.exception.IsDirException;
@@ -30,6 +32,7 @@ import com.cloudcontrol.doozer4j.msg.Msg.Response;
  * 
  */
 public abstract class AbstractSynchroneousDoozerClient {
+	private final Logger log = Logger.getLogger(this.getClass());
 	
 	private InetAddress inetAddress;
 	private int port;
@@ -90,8 +93,14 @@ public abstract class AbstractSynchroneousDoozerClient {
 					openOutputStream();
 				    break;
 				}catch(IOException ioe){
-					ioe.printStackTrace();
-					continue;
+					if(i>=getAttempts()-1){
+						socket.close();
+						socket = null;
+						
+						throw ioe;
+					}else{
+						log.info(ioe.getMessage());
+					}
 				}
 			}
 		}
