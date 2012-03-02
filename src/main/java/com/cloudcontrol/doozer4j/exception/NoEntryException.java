@@ -1,5 +1,10 @@
 package com.cloudcontrol.doozer4j.exception;
 
+/**
+ * 
+ * @author Denis Neuling (dn@cloudcontrol.de)
+ *
+ */
 public class NoEntryException extends DoozerException{
 	private static final long serialVersionUID = 8821054641261859476L;
 

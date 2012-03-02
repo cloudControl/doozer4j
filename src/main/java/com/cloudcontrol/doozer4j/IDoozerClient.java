@@ -11,6 +11,22 @@ import com.cloudcontrol.doozer4j.msg.Msg.Response;
  *
  */
 public interface IDoozerClient{
+
+	/**
+	 * Manipulates the timeout
+	 * default is 2 seconds
+	 * @param timeout
+	 */
+	public void setTimeout(int timeout);
+	public int getTimeout();
+	
+	/**
+	 * Manipulates the attempts to connect to the host
+	 * default is 3 seconds
+	 * @param attempts
+	 */
+	public void setAttempts(int attempts);
+	public int getAttempts();
 	
 	/**
 	 * 

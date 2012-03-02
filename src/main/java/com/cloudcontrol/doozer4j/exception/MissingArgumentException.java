@@ -1,5 +1,10 @@
 package com.cloudcontrol.doozer4j.exception;
 
+/**
+ * 
+ * @author Denis Neuling (dn@cloudcontrol.de)
+ *
+ */
 public class MissingArgumentException extends DoozerException{
 	private static final long serialVersionUID = -9139913075025572051L;
 

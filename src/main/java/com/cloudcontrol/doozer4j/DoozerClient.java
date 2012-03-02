@@ -4,6 +4,11 @@ import java.net.InetAddress;
 
 import com.cloudcontrol.doozer4j.support.AbstractDoozerClient;
 
+/**
+ * 
+ * @author Denis Neuling (dn@cloudcontrol.de)
+ *
+ */
 public class DoozerClient extends AbstractDoozerClient implements IDoozerClient{
 	
 	private final int DEFAULTTIMEOUT = 1000; 

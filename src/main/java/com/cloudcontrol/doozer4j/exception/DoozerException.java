@@ -2,6 +2,11 @@ package com.cloudcontrol.doozer4j.exception;
 
 import java.io.IOException;
 
+/**
+ * 
+ * @author Denis Neuling (dn@cloudcontrol.de)
+ *
+ */
 public class DoozerException extends IOException{
 	private static final long serialVersionUID = 2935978831408143740L;
 	
