@@ -56,7 +56,7 @@ How to setup this project?
 
 3. Run maven:
 
-        $ mvn instal
+        $ mvn install
 
    Or if you use any derivate of eclipse/Equinox
 
