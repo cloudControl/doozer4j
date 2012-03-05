@@ -7,11 +7,7 @@ import java.net.UnknownHostException;
 import junit.framework.Assert;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import com.cloudcontrol.doozer4j.DoozerClient;
-import com.cloudcontrol.doozer4j.IDoozerClient;
 
 
 /**
@@ -21,10 +17,10 @@ import com.cloudcontrol.doozer4j.IDoozerClient;
  * 
  * @author Denis Neuling (dn@cloudcontrol.de)
  */
-@Ignore
+//@Ignore
 public class DoozerTest {
 
-	private String host = "localhost";
+	private String host = "127.0.0.1";
 	private int port = 8046;
 	
 	private InetAddress address;
@@ -44,7 +40,7 @@ public class DoozerTest {
 		IDoozerClient dz = new DoozerClient(address, port);
 		
 		try {
-			dz.add("/added", "success");
+			dz.add("/etc/nginx/conf/upstreams.conf", "success");
 		} catch (IOException e) {
 			Assert.fail(e.getMessage());
 		}

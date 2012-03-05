@@ -31,8 +31,6 @@ public abstract class AbstractDoozerClient extends AbstractSynchroneousDoozerCli
 			
 		Response response = buildResponse(send(builder));
 		
-		System.out.println(response);
-		
 		return response.getRev();
 	}
 

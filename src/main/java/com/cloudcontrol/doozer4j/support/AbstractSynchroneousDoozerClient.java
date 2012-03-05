@@ -85,6 +85,7 @@ public abstract class AbstractSynchroneousDoozerClient {
 			
 			for(int i = 0; i < getAttempts() ; i ++){
 				try{
+					log.debug("Connecting to serversocket, attempt:{"+i+"}");
 				    socket = new Socket();
 				    socket.setSoTimeout(1000);
 				    int timeout = getTimeout();
@@ -99,7 +100,7 @@ public abstract class AbstractSynchroneousDoozerClient {
 						
 						throw ioe;
 					}else{
-						log.info(ioe.getMessage());
+						log.warn(ioe.getMessage());
 					}
 				}
 			}
@@ -126,6 +127,8 @@ public abstract class AbstractSynchroneousDoozerClient {
 	
 	@SuppressWarnings("unused")
 	protected byte[] receive() throws IOException{
+		log.debug("Receiving response from inputstream.");
+		
 		byte[] lenght = new byte[4];
 		int responseSize = inputStream.read(lenght);
 		
@@ -136,6 +139,8 @@ public abstract class AbstractSynchroneousDoozerClient {
 	}
 	
 	protected void write(Request request) throws IOException{
+		log.debug("Writing request to outputstream.");
+		
 		int size = request.getSerializedSize();
 		
 		openOutputStream();
@@ -158,6 +163,8 @@ public abstract class AbstractSynchroneousDoozerClient {
 			
 			closeInputStream();
 			disconnect();
+			
+			log.debug("Successfully received "+responseBuffer.length+" bytes.");
 			
 			return responseBuilder;
 		}catch(DoozerException dze){
