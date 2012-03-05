@@ -6,31 +6,32 @@ import com.cloudcontrol.doozer4j.exception.DoozerException;
 import com.cloudcontrol.doozer4j.msg.Msg.Response;
 
 /**
+ * The main interface for the doozerClient
  * 
  * @author Denis Neuling (dn@cloudcontrol.de)
- *
+ * 
+ * @since 0.0.1
  */
 public interface IDoozerClient{
 
 	/**
-	 * Manipulates the timeout
-	 * default is 2 seconds
+	 * Manipulates the timeout. Default: 2 seconds.
+	 * 
 	 * @param timeout
 	 */
 	public void setTimeout(int timeout);
 	public int getTimeout();
 	
 	/**
-	 * Manipulates the attempts to connect to the host
-	 * default is 3 seconds
+	 * Manipulates the attempts to connect to the host default is 3 attempts
+	 * 
 	 * @param attempts
 	 */
 	public void setAttempts(int attempts);
 	public int getAttempts();
 	
-	/**
-	 * 
-	 * doozer [options] set <path>
+	/** 
+	 * <pre> doozer [options] set &lt;path&gt; &lt;rev&gt; </pre>
 	 * 
 	 * @param path the path of the file
 	 * @param value the file to set onto the path
@@ -41,8 +42,7 @@ public interface IDoozerClient{
 	public long set(String path, String value, long rev) throws DoozerException, IOException;
 	
 	/**
-	 * 
-	 * doozer [options] add <path>
+	 * <pre> doozer [options] add &lt;path&gt; </pre>
 	 * 
 	 * @param path the path of the file
 	 * @param value the file to set onto the path
@@ -52,8 +52,7 @@ public interface IDoozerClient{
 	public long add(String path, String value) throws DoozerException, IOException;
 	
 	/**
-	 * 
-	 * doozer [options] rev <path>
+	 * <pre> doozer [options] rev &lt;path&gt; </pre>
 	 * 
 	 * @param path the path of the file
 	 * @return long
@@ -62,8 +61,7 @@ public interface IDoozerClient{
 	public long rev(String path) throws DoozerException, IOException;
 	
 	/**
-	 * 
-	 * doozer [options] get <path>
+	 * <pre> doozer [options] get &lt;path&gt; </pre>
 	 * 
 	 * @param path the path of the file
 	 * @return Response
@@ -72,6 +70,7 @@ public interface IDoozerClient{
 	public Response get(String path) throws DoozerException, IOException;
 	
 	/**
+	 * <pre> doozer [options] stat &lt;path&gt; </pre>
 	 * 
 	 * @param path the path of the file
 	 * @return Response

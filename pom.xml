@@ -1,8 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0">
+		 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cloudcontrol</groupId>
   <artifactId>doozer4j</artifactId>
-<!--   <version>0.0.1-SNAPSHOT</version> -->
   <version>0.0.2</version>
   
   <dependencies>
@@ -45,14 +47,11 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
-<!--             <id>generate-protobuffer</id> -->
             <phase>generate-protobuffer</phase>
             <configuration>
               <tasks>
                 <echo message="Generating protobuffers..."/>
                 <exec executable="protoc src/main/resources/msg.proto --java_out=src/main/java">
-<!--                   <arg value="src/main/resources/msg.proto" /> -->
-<!--                   <arg value="\-\-java_out=src/main/java" /> -->
                 </exec>
   			  </tasks>
   			</configuration>

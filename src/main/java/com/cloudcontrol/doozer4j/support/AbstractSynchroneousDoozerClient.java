@@ -26,10 +26,14 @@ import com.cloudcontrol.doozer4j.msg.Msg.Request.Builder;
 import com.cloudcontrol.doozer4j.msg.Msg.Response;
 
 /**
- * This class provides simple doozer IO operations
+ * This class provides simple doozer IO operations.
+ * 
+ * Note: All IO operations will be processed synchroneously. 
+ * 		 Asynchroneous operations are not supported yet.
  * 
  * @author Denis Neuling (dn@cloudcontrol.de)
  * 
+ * @since 0.0.1
  */
 public abstract class AbstractSynchroneousDoozerClient {
 	private final Logger log = Logger.getLogger(this.getClass());
@@ -40,31 +44,68 @@ public abstract class AbstractSynchroneousDoozerClient {
 	private Socket socket;
 	private BufferedOutputStream outputStream;
 	private BufferedInputStream inputStream;
-	
+
 	public abstract int getTimeout();
 	public abstract int getAttempts();
 	
+	/**
+	 * Returns the port on what has to be read and written
+	 * 
+	 * @return the port to write and read to
+	 */
 	public int getPort(){
 		return port;
 	}
+	
+	/**
+	 * Set the port on what the socket has to connect
+	 * 
+	 * @param port the port to set
+	 */
 	public void setPort(int port){
 		this.port = port;
 	}
 	
+	/**
+	 * Returns the inetAddress on what the socket has to connect.
+	 * 
+	 * @return inetAddress on what the socket has to connect
+	 */
 	public InetAddress getInetAddress(){
 		return inetAddress;
 	}
+	
+	/**
+	 * Set the address to try to connect.
+	 * 
+	 * @param address the address to connect to
+	 */
 	public void setInetAddress(InetAddress address){
 		this.inetAddress = address;
 	}
 	
+	/**
+	 * Returns the socket to handle with.
+	 * 
+	 * @return socket the socket to work with
+	 */
 	public Socket getSocket(){
 		return socket;
 	}
+	
+	/**
+	 * Set the socket to handle with.
+	 * 
+	 * @param socket the socket to set
+	 */
 	public void setSocket(Socket socket){
 		this.socket = socket;
 	}
 	
+	/**
+	 * Is true if the socket is initialized and connected.
+	 * @return connected if the socket is connected
+	 */
 	public boolean isConnected(){
 		boolean connected = (this.socket!=null?this.socket.isConnected():false);
 		return connected;
@@ -107,24 +148,55 @@ public abstract class AbstractSynchroneousDoozerClient {
 		}
 	}
 	
+	
+	/**
+	 * Connects if necessary to the serversocket and
+	 * opens the outputstream to read the response from.
+	 * 
+	 * @throws IOException
+	 */
 	private void openOutputStream() throws IOException{
 		connect();
 		outputStream = new BufferedOutputStream(socket.getOutputStream());
 	}
 	
+	/**
+	 * Connects if necessary to the serversocket and
+	 * opens the inputstream to write the request into.
+	 * 
+	 * @throws IOException
+	 */
 	private void openInputStream() throws IOException{
 		connect();
 		inputStream = new BufferedInputStream(socket.getInputStream());
 	}
 	
+	/**
+	 * Closes the inputstream.
+	 * 
+	 * @throws IOException
+	 */
 	private void closeInputStream() throws IOException{
 		inputStream.close();
 	}
 
+	/**
+	 * Calls the Builder to build the response object.
+	 *  
+	 * @param builder the builder that holds the response
+	 * @return response the response that will be builded
+	 */
 	protected Response buildResponse(com.cloudcontrol.doozer4j.msg.Msg.Response.Builder builder){
 		return builder.build();
 	}
 	
+	/**
+	 * Note: that method does not allow to receive responses 
+	 * that size is more than 2^31-1 (~2GB) bytes within one connection.
+	 * 
+	 * @return bytes the byte decoded response
+	 * @throws IOException
+	 */
 	@SuppressWarnings("unused")
 	protected byte[] receive() throws IOException{
 		log.debug("Receiving response from inputstream.");
@@ -138,6 +210,12 @@ public abstract class AbstractSynchroneousDoozerClient {
 		return responseBuffer;
 	}
 	
+	/**
+	 * Note: that method does not allow to send requests
+	 * that size is more than 2^31-1 (~2GB) bytes within one connection.
+	 * 
+	 * @throws IOException
+	 */
 	protected void write(Request request) throws IOException{
 		log.debug("Writing request to outputstream.");
 		
@@ -149,6 +227,16 @@ public abstract class AbstractSynchroneousDoozerClient {
 		outputStream.flush();
 	}
 	
+	/**
+	 * This will send the request to the concerning doozerd cluster 
+	 * and will receive and encode the response. <br>
+	 * For more informations see googles protocolbuffers documentation. 
+	 * 
+	 * @param builder
+	 * @return Builder thr builder that holds the response
+	 * @throws DoozerException
+	 * @throws IOException
+	 */
 	protected com.cloudcontrol.doozer4j.msg.Msg.Response.Builder send(Builder builder) throws DoozerException, IOException{
 		Request request = builder.build();
 		write(request);
@@ -177,7 +265,7 @@ public abstract class AbstractSynchroneousDoozerClient {
 	}
 	
 	/**
-	 * relieves all network resources
+	 * Relieves all network resources.
 	 * 
 	 * @throws IOException
 	 */
@@ -212,20 +300,20 @@ public abstract class AbstractSynchroneousDoozerClient {
 	}
 
     /**
-	 * What do we do with the error codes?
+	 * <br>
 	 * 
-	 * OTHER        = 127;
-	 * TAG_IN_USE   = 1;
-	 * UNKNOWN_VERB = 2;
-	 * READONLY     = 3;
-	 * TOO_LATE     = 4;
-	 * REV_MISMATCH = 5;
-	 * BAD_PATH     = 6;
-	 * MISSING_ARG  = 7;
-	 * RANGE        = 8;
-	 * NOTDIR       = 20;
-	 * ISDIR        = 21;
-	 * NOENT        = 22;
+	 * OTHER        = 127; 	<br>
+	 * TAG_IN_USE   = 1;	<br>
+	 * UNKNOWN_VERB = 2;	<br>
+	 * READONLY     = 3;	<br>
+	 * TOO_LATE     = 4;	<br>
+	 * REV_MISMATCH = 5;	<br>
+	 * BAD_PATH     = 6;	<br>
+	 * MISSING_ARG  = 7;	<br>
+	 * RANGE        = 8;	<br>
+	 * NOTDIR       = 20;	<br>
+	 * ISDIR        = 21;	<br>
+	 * NOENT        = 22;	<br>
 	 * 
 	 * @param responseBuilder the bytecoded response
 	 * @return String the error detail 
@@ -276,6 +364,14 @@ public abstract class AbstractSynchroneousDoozerClient {
 		return message;
 	}
 	
+	/**
+	 * Parses 4 fields long byte array to 32bit integer value
+	 * <br>
+	 * [0000][0000][0000][0001] == 1
+	 * 
+	 * @param bytes the byte array to decode
+	 * @return int the value of the encoded byte array
+	 */
 	public static int parseToInt32(byte[] bytes) {
         return ( bytes[0] <<  24)
              + ((bytes[1] & 0xFF) << 16)
@@ -284,6 +380,14 @@ public abstract class AbstractSynchroneousDoozerClient {
         ;
     }
 
+	/**
+	 * Parses an integer value to 4 fields long byte array
+	 * <br>
+	 * 1 == [0000][0000][0000][0001]
+	 * 
+	 * @param value the integer to decode
+	 * @return byte[] the byte value of the encoded integer
+	 */
     public static byte[] parseFromInt32(int value) {
         byte[] bytes = new byte[4];
         bytes[3] = (byte)value;

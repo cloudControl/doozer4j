@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.cloudcontrol</groupId>
+  <artifactId>doozer4j</artifactId>
+<!--   <version>0.0.1-SNAPSHOT</version> -->
+  <version>0.0.1</version>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>com.google.protobuf</groupId>
+  		<artifactId>protobuf-java</artifactId>
+  		<version>2.4.1</version>
+  	</dependency>
+  	
+  	<dependency>
+		<groupId>io.netty</groupId>
+		<artifactId>netty</artifactId>
+		<version>3.3.1.Final</version>
+	</dependency>
+	
+	<dependency>
+	  	<groupId>log4j</groupId>
+	  	<artifactId>log4j</artifactId>
+	  	<version>1.2.16</version>
+	</dependency>
+	
+	<dependency>
+	  	<groupId>junit</groupId>
+	  	<artifactId>junit</artifactId>
+	  	<version>4.10</version>
+	</dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+<!--             <id>generate-protobuffer</id> -->
+            <phase>generate-protobuffer</phase>
+            <configuration>
+              <tasks>
+                <echo message="Generating protobuffers..."/>
+                <exec executable="protoc src/main/resources/msg.proto --java_out=src/main/java">
+<!--                   <arg value="src/main/resources/msg.proto" /> -->
+<!--                   <arg value="\-\-java_out=src/main/java" /> -->
+                </exec>
+  			  </tasks>
+  			</configuration>
+  		  </execution>
+  		</executions>
+  	   </plugin>
+
+	   <plugin>
+		 <groupId>org.apache.maven.plugins</groupId>
+		 <artifactId>maven-shade-plugin</artifactId>
+		 <executions>
+			<execution>
+			  <phase>package</phase>
+			  <goals>
+			     <goal>shade</goal>
+		      </goals>
+			</execution>
+		 </executions>
+		 <configuration>
+		     <finalName>${artifactId}-${version}</finalName>
+	     </configuration>
+	   </plugin>  	   
+  	 </plugins>
+  	 
+  </build>
+
+</project>
