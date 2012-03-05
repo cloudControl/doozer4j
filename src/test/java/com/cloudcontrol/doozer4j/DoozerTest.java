@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 import junit.framework.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -17,7 +18,7 @@ import org.junit.Test;
  * 
  * @author Denis Neuling (dn@cloudcontrol.de)
  */
-//@Ignore
+@Ignore
 public class DoozerTest {
 
 	private String host = "127.0.0.1";
